@@ -1,0 +1,33 @@
+from django.test import TestCase
+from django.urls import reverse
+from store.models import Product
+
+class ProductDetailViewTestCase(TestCase):
+    def setUp(self):
+        self.product = Product.objects.create(
+            title='Test Product',
+            brand='Test Brand',
+            description='Test Description',
+            price=9.99,
+            image='test_image.jpg'
+        )
+
+    def test_product_detail_view(self):
+        response = self.client.get(reverse('product_detail', args=[self.product.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'store/product_detail.html')
+        self.assertContains(response, self.product.title)
+        self.assertContains(response, self.product.brand)
+        self.assertContains(response, self.product.description)
+        self.assertContains(response, self.product.price)
+        self.assertContains(response, 'Add to cart')
+
+    def test_add_to_cart_ajax_view(self):
+        response = self.client.post(reverse('cart_add'), {
+            'product_id': self.product.id,
+            'product_quantity': 2,
+            'csrfmiddlewaretoken': 'test_token',
+            'action': 'post'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': True})

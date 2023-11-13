@@ -1,0 +1,30 @@
+{% include "store/base.html" %}
+{% load static %} 
+{% block content %}
+
+<style>
+  body {
+    background-color: gray;
+  }
+</style>
+
+<body>
+  <br />
+
+  <div class="container, bg-white shadow-md p-5 form-layout">
+    <div class="text-center">
+        <i class="fa-solid fa-x fa-2xl" style="color: #e31616;"></i>
+
+      <br /><br />
+
+      <h4><strong> Payment Failed! </strong></h4>
+
+      <hr />
+
+      <p>Please update your payment method</p>
+      
+    </div>
+  </div>
+</body>
+
+{% endblock content %}
